@@ -157,6 +157,19 @@ kommt danach nicht mehr, außer der Server ändert sich grundlegend.
 Falls du eine Passphrase gesetzt hast, fragt SSH jetzt danach — das ist die
 Passphrase aus Schritt 2, nicht das sudo-Passwort vom Server.
 
+**Problem: SSH fragt trotz Key nach dem Passwort.** Wenn im Terminal eine
+Warnung wie „Permissions 0644 for '…/id_ed25519' are too open … This private
+key will be ignored" steht, sind die Zugriffsrechte deines **privaten**
+Schlüssels zu offen — SSH benutzt ihn dann aus Sicherheitsgründen nicht und
+fällt aufs Passwort zurück. Einmalig korrigieren:
+
+```bash
+chmod 600 ~/.ssh/id_ed25519
+```
+
+Danach `ssh vps` erneut versuchen. (Das ist ein Mac-Problem, nicht der
+Server — am Server muss dafür nichts geändert werden.)
+
 ---
 
 ## 6. Schlüsselbund: Passphrase merken lassen

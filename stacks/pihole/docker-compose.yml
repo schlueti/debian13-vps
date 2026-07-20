@@ -1,0 +1,36 @@
+services:
+  pihole:
+    image: pihole/pihole:2026.07.2
+    container_name: pihole
+    hostname: pihole
+    environment:
+      TZ: Europe/Berlin
+      FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD}
+      FTLCONF_dns_upstreams: unbound#53
+      FTLCONF_dns_listeningMode: all
+    ports:
+      # Nur auf der Tailscale-IP erreichbar — nichts davon ist öffentlich
+      - "${TAILSCALE_IP}:53:53/tcp"
+      - "${TAILSCALE_IP}:53:53/udp"
+      - "${TAILSCALE_IP}:8080:80/tcp"
+    volumes:
+      - ./etc-pihole:/etc/pihole
+    depends_on:
+      - unbound
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 384m
+    restart: unless-stopped
+
+  unbound:
+    image: klutchell/unbound:1.25.1
+    container_name: unbound
+    # Keine ports: — nur Pi-hole erreicht Unbound über das interne Docker-Netz
+    volumes:
+      - ./unbound/custom.conf:/etc/unbound/custom.conf.d/custom.conf:ro
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
+    restart: unless-stopped

@@ -1,0 +1,10 @@
+[Unit]
+Description=Nächtliches Backup (Vaultwarden, Pi-hole, Configs)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup.sh
+StandardOutput=append:/var/log/christina-backup.log
+StandardError=append:/var/log/christina-backup.log

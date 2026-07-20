@@ -1,0 +1,23 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.36.0
+    container_name: vaultwarden
+    environment:
+      TZ: Europe/Berlin
+      # z. B. https://vps.tailnet-name.ts.net — muss zur tailscale-serve-URL passen
+      DOMAIN: ${VW_DOMAIN}
+      # Beim Einrichten true, nach Christinas erstem Account auf false (Runbook Phase 7)
+      SIGNUPS_ALLOWED: ${SIGNUPS_ALLOWED:-false}
+    ports:
+      # Nur localhost — HTTPS macht `tailscale serve` davor
+      - "127.0.0.1:8081:80"
+    volumes:
+      # ./data legt Docker beim ersten Start selbst an (gehört root) — NIE vorher
+      # per mkdir anlegen; Restore aus Backup nur als root entpacken (tar --same-owner)
+      - ./data:/data
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    restart: unless-stopped

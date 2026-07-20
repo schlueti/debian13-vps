@@ -29,8 +29,14 @@ DEBIAN_FRONTEND=noninteractive apt-get full-upgrade -y \
 
 log "Basis-Pakete installieren ..."
 DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    sudo curl git vim less htop rsync ca-certificates gnupg \
+    sudo curl git vim less htop rsync ca-certificates gnupg locales \
     ufw fail2ban unattended-upgrades
+
+log "UTF-8-Locale (de_DE.UTF-8) erzeugen — sonst verrutscht der zsh-Prompt ..."
+sed -i 's/^# *de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+update-locale LANG=de_DE.UTF-8
+success "Locale gesetzt (greift bei der nächsten Login-Session)."
 
 if ! swapon --show=NAME --noheadings | grep -qx "$SWAPFILE"; then
     log "Swapdatei ($SWAPSIZE) anlegen — Sicherheitsnetz bei 1 GB RAM ..."

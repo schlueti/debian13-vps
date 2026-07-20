@@ -21,7 +21,10 @@ for u in "${USERS[@]}"; do
         dir="$home/.oh-my-zsh/custom/plugins/$plugin"
         [ -d "$dir" ] || sudo -u "$u" git clone --depth 1 "https://github.com/zsh-users/$plugin" "$dir"
     done
+    p10k="$home/.oh-my-zsh/custom/themes/powerlevel10k"
+    [ -d "$p10k" ] || sudo -u "$u" git clone --depth 1 https://github.com/romkatv/powerlevel10k "$p10k"
     sudo -u "$u" sed -i 's/^plugins=(git)$/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$home/.zshrc"
+    sudo -u "$u" sed -i 's#^ZSH_THEME=.*#ZSH_THEME="powerlevel10k/powerlevel10k"#' "$home/.zshrc"
     chsh -s "$(command -v zsh)" "$u"
     success "zsh für $u eingerichtet."
 done

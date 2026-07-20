@@ -10,10 +10,10 @@ Jede Phase hat vier Blöcke: **Was machen wir?**, **Warum?**, **Befehle**,
 **Woran sehen wir, dass es geklappt hat?**. Wenn eine Verifikation nicht
 passt: anhalten, nicht weitermachen, lieber einmal mehr nachfragen.
 
-Alle Befehle ab Phase 1 laufen auf dem VPS, im Verzeichnis
-`/opt/setup/christina` (das Repo ist ein Monorepo — der Clone landet unter
-`/opt/setup`, das Setup-Projekt selbst liegt im Unterordner `christina/`).
-Ausnahme ist Phase 0 — die läuft teils am Mac, teils per SSH auf dem VPS.
+Alle Befehle ab Phase 1 laufen auf dem VPS, im Verzeichnis `/opt/setup`
+(dorthin klont Phase 0 das Repo — `scripts/` und `stacks/` liegen direkt
+darunter). Ausnahme ist Phase 0 — die läuft teils am Mac, teils per SSH auf
+dem VPS.
 
 ---
 
@@ -45,13 +45,13 @@ aussperrt).
   ssh root@<VPS-IP>
   apt-get update && apt-get install -y git
   git clone <REPO-URL> /opt/setup
-  cd /opt/setup/christina
+  cd /opt/setup
   ```
 
 **Woran sehen wir, dass es geklappt hat?**
 `scripts/keys/christina.pub` und `scripts/keys/markus.pub` existieren und
 beginnen mit `ssh-ed25519`. Der Tailscale-Account-Login funktioniert im
-Browser. Auf dem VPS zeigt `ls /opt/setup/christina` die Ordner `scripts/`
+Browser. Auf dem VPS zeigt `ls /opt/setup` die Ordner `scripts/`
 und `stacks/`.
 
 ---
@@ -109,8 +109,8 @@ Das muss abgelehnt werden („Permission denied").
 ## Phase 2 — Shell: zsh + oh-my-zsh
 
 **Was machen wir?**
-`scripts/02_shell.sh` ausführen: zsh mit oh-my-zsh, Autosuggestions und
-Syntax-Highlighting für beide User einrichten.
+`scripts/02_shell.sh` ausführen: zsh mit oh-my-zsh, Autosuggestions,
+Syntax-Highlighting und dem powerlevel10k-Theme für beide User einrichten.
 
 **Warum?**
 Ein angenehmeres Terminal macht den Rest des Nachmittags leichter —
@@ -128,6 +128,11 @@ Danach neu einloggen (`exit`, dann wieder `ssh christina@<VPS-IP>`).
 **Woran sehen wir, dass es geklappt hat?**
 Nach dem Login startet automatisch zsh — der Prompt sieht anders aus.
 Beim Tippen erscheinen graue Vorschläge, `Tab` zeigt eine Auswahlliste an.
+
+Beim ersten zsh-Start startet powerlevel10k einen Einrichtungs-Assistenten
+(`p10k configure`) — einfach durchklicken. Für die vollen Symbole muss im
+Terminal die Schrift **MesloLGS NF** installiert und ausgewählt sein; sonst
+`p10k configure` erneut aufrufen und die ASCII-Variante wählen.
 
 Guter Moment für ein paar Minuten Terminal-Spielen: die wichtigsten
 Alltagsbefehle (`ls`, `cd`, `cat`, `systemctl status` …) stehen zum
@@ -265,7 +270,7 @@ Google oder Cloudflare.
 **Befehle**
 
 ```bash
-sudo mkdir -p /srv/docker && sudo cp -r /opt/setup/christina/stacks/* /srv/docker/
+sudo mkdir -p /srv/docker && sudo cp -r /opt/setup/stacks/* /srv/docker/
 sudo chown -R christina:christina /srv/docker
 ```
 
@@ -385,8 +390,8 @@ daran denken muss.
 **Befehle**
 
 ```bash
-sudo cp /opt/setup/christina/scripts/backup.sh /usr/local/bin/ && sudo chmod +x /usr/local/bin/backup.sh
-sudo cp /opt/setup/christina/scripts/systemd/christina-backup.* /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable --now christina-backup.timer
+sudo cp /opt/setup/scripts/backup.sh /usr/local/bin/ && sudo chmod +x /usr/local/bin/backup.sh
+sudo cp /opt/setup/scripts/systemd/christina-backup.* /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable --now christina-backup.timer
 ```
 
 Testlauf:

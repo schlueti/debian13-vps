@@ -2,6 +2,9 @@
 # Gemeinsame Funktionen für alle Setup-Skripte.
 # Wird per `source` eingebunden, nicht direkt ausführen.
 
+# sbin in den PATH, sonst fehlen bei `su` (ohne -) locale-gen, swapon, adduser etc.
+export PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH"
+
 RED='\033[0;31m'; GREEN='\033[0;32m'; BLUE='\033[0;34m'; NC='\033[0m'
 
 log()     { echo -e "${BLUE}[INFO]${NC} $*"; }

@@ -25,6 +25,11 @@ services:
   unbound:
     image: klutchell/unbound:1.25.1
     container_name: unbound
+    # Direkt als unbound-User (uid:gid im Image) starten. So entfällt der
+    # Privilege-Drop (der an cap_drop ALL scheitern würde) und der Prozess
+    # besitzt /etc/unbound, kann also root.key schreiben. Zusammenspiel mit
+    # username: "" in unbound/custom.conf.
+    user: "101:102"
     # Keine ports: — nur Pi-hole erreicht Unbound über das interne Docker-Netz
     volumes:
       - ./unbound/custom.conf:/etc/unbound/custom.conf.d/custom.conf:ro

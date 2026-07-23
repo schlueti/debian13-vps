@@ -45,24 +45,42 @@ kaum Akku.
 
 ---
 
-## Teil 2 — Die Verwaltungs-Seite (nur zur Info, du brauchst sie selten)
+## Teil 2 — Die Verwaltungs-Seite (ein paar einmalige Einstellungen)
 
-Es gibt eine Verwaltungs-Seite im Internet, auf der man sieht, welche Geräte
-verbunden sind: **[login.tailscale.com](https://login.tailscale.com)** — dort mit
+Es gibt eine Verwaltungs-Seite im Internet, auf der die Geräte und Einstellungen
+verwaltet werden: **[login.tailscale.com](https://login.tailscale.com)** — dort mit
 deinem Tailscale-Konto anmelden (dasselbe, mit dem die App angemeldet ist).
 
 Was du dort siehst: eine **Liste deiner Geräte** (Mac, iPhone, der Server, später
-die Geräte deiner Familie). Grüner Punkt = online. Mehr ist da für dich nicht
-wichtig — **du wirst da normalerweise nie reinschauen müssen.** Der einzige Grund,
-warum du sie doch mal brauchst, ist: **Familie einladen** (siehe Teil 4).
+die Geräte deiner Familie). Grüner Punkt = online. **Im Alltag schaust du hier nie
+rein.** Es gibt nur ein paar **einmalige** Aufgaben, die hier erledigt werden:
+den Werbeblocker einschalten (gleich unten), Familie einladen (Teil 4) und für
+Markus einen Zugangs-Schlüssel erstellen (Teil 5).
+
+### ✅ Einmalig einschalten: Werbeblocker fürs ganze Netz (wichtig!)
+
+Damit der Werbeblocker auf allen Geräten wirkt, muss er einmal in der
+Verwaltungs-Seite aktiviert werden. **Ohne diesen Schritt passiert noch nichts** —
+also bitte einmal machen (dauert 1 Minute):
+
+1. Auf **[login.tailscale.com](https://login.tailscale.com)** anmelden.
+2. Oben in der Menüleiste auf **„DNS"** klicken.
+3. Beim Abschnitt **„Nameservers"** auf **„Add nameserver"** → **„Custom…"** klicken.
+4. Als Adresse die Pi-hole-Adresse eintragen: **`100.x.x.x`** (die IP von oben,
+   ohne `http` und ohne `:8080`) → **Save/Speichern**.
+5. Jetzt erscheint eine Option **„Override local DNS"** — den Schalter auf **an**
+   stellen. (Das sorgt dafür, dass wirklich alle Geräte den Werbeblocker nehmen.)
+
+Fertig. Ab jetzt filtert Pi-hole für alle Geräte im Netz. Wenn Markus dir das schon
+abgenommen hat, kannst du diesen Schritt überspringen.
 
 ---
 
 ## Teil 3 — Der Werbeblocker (Pi-hole)
 
-**Das Beste zuerst: Du musst dafür nichts tun.** Der Werbeblocker ist automatisch
-für all deine Geräte aktiv, sobald Tailscale an ist. Werbung verschwindet in Apps
-und im Browser von selbst.
+**Das Beste zuerst: Im Alltag musst du dafür nichts tun.** Sobald der Werbeblocker
+einmal eingeschaltet ist (Teil 2) und Tailscale an ist, ist er automatisch für all
+deine Geräte aktiv. Werbung verschwindet in Apps und im Browser von selbst.
 
 **Kurzer Test, ob's wirkt:** Öffne eine werbelastige Nachrichten-Seite (z. B. eine
 Boulevard-Zeitung). Wo sonst Werbebanner blinken, ist jetzt Ruhe oder eine leere
@@ -119,7 +137,35 @@ Werbeblocker wird ihren Geräten automatisch mitgegeben, sobald sie im Netz sind
 
 ---
 
-## Teil 5 — Der Passwort-Tresor (Vaultwarden)
+## Teil 5 — Für Markus: einen Zugangs-Schlüssel (Auth Key) ausstellen 🔑
+
+Markus möchte sich mit seinem eigenen Rechner in dein Netz einklinken, ohne sich
+jedes Mal über die Webseite anmelden zu müssen. Dafür stellst du ihm einen
+**Zugangs-Schlüssel** aus — das ist wie ein Einmal-Passwort, mit dem sich sein
+Gerät selbst anmeldet. So geht's:
+
+1. Auf **[login.tailscale.com](https://login.tailscale.com)** anmelden.
+2. Oben rechts auf **„Settings"** (Einstellungen) klicken.
+3. Links im Menü auf **„Keys"** (Schlüssel) klicken.
+4. Den Knopf **„Generate auth key…"** (Schlüssel erzeugen) klicken.
+5. Bei **„Description"** etwas Erkennbares eintragen, z. B. `Markus Rechner`.
+6. **Markus sagt dir, ob du den Schalter „Reusable" (mehrfach verwendbar)
+   anhaken sollst** — vermutlich ja, dann kann er sich immer wieder damit
+   verbinden. Den Rest (Ablaufdatum usw.) so lassen.
+7. Auf **„Generate key"** klicken. Es erscheint ein langer Text, der mit
+   **`tskey-auth-…`** anfängt.
+
+> ⚠️ Dieser Schlüssel wird **nur ein einziges Mal angezeigt** — also gleich
+> kopieren. Und: Er ist wie ein Passwort. Schick ihn Markus bitte **nicht per
+> normaler Mail/WhatsApp**, sondern sicher — am einfachsten legst du ihn als
+> Eintrag in eurem **Passwort-Tresor** (Teil 6) ab, oder gibst ihn ihm persönlich.
+
+Wenn Markus sich damit verbunden hat, taucht sein Rechner in deiner Geräteliste
+auf — fertig. Den Schlüssel selbst braucht danach niemand mehr.
+
+---
+
+## Teil 6 — Der Passwort-Tresor (Vaultwarden)
 
 Das ist dein persönlicher, sicherer Speicher für Passwörter. Er läuft auf deinem
 eigenen Server — die Passwörter liegen also bei dir, nicht bei einer fremden Firma.
@@ -167,7 +213,7 @@ Anmeldung wie in der App.
 
 ---
 
-## Teil 6 — Wenn mal etwas nicht geht
+## Teil 7 — Wenn mal etwas nicht geht
 
 Fast immer ist es dasselbe: **Tailscale ist aus.** Also zuerst prüfen:
 
@@ -185,8 +231,10 @@ schneller, wenn nichts verstellt wurde.
 | Was | Wie |
 |-----|-----|
 | Läuft alles? | Tailscale an (Mac: Symbol farbig / iPhone: Schalter grün) |
-| Werbeblocker | Läuft automatisch, nichts zu tun |
+| Werbeblocker einschalten | Einmalig: login.tailscale.com → DNS → Nameserver `100.x.x.x` + „Override local DNS" an |
+| Werbeblocker im Alltag | Läuft automatisch, nichts zu tun |
 | Familie einladen | login.tailscale.com → Users → Invite users → Link schicken |
+| Schlüssel für Markus | login.tailscale.com → Settings → Keys → Generate auth key |
 | Passwort-Tresor | `https://<maschine>.<tailnet>.ts.net` oder Bitwarden-App |
 | Master-Passwort | Auf Zettel notieren — kann NIEMAND zurücksetzen! |
 | Etwas geht nicht | Erst Tailscale prüfen, dann Markus |

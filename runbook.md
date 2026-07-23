@@ -257,17 +257,24 @@ funktioniert SSH weiterhin.
 ## Phase 6 — Pi-hole: Werbefilter für das ganze Tailnet
 
 **Was machen wir?**
-Die Docker-Stacks nach `/srv/docker` kopieren, Pi-hole + Unbound starten
-und als DNS-Server des Tailnets eintragen.
+Zuerst den Host-DNS für Pi-hole freiräumen (Port 53), dann die Docker-Stacks
+nach `/srv/docker` kopieren, Pi-hole + Unbound starten und als DNS-Server des
+Tailnets eintragen.
 
 **Warum?**
 Pi-hole filtert Werbung und Tracker zentral für alle Geräte im Tailnet —
 einmal einrichten, wirkt danach auf Mac und iPhone gleichermaßen. Zwei
 Container arbeiten zusammen: Pi-hole filtert die Anfragen, Unbound fragt
 danach selbst die Root-Server der DNS-Hierarchie ab — ohne Umweg über
-Google oder Cloudflare.
+Google oder Cloudflare. Debian 13 hört mit `systemd-resolved` aber selbst auf
+Port 53 — den muss `scripts/06_pihole_dns.sh` erst freimachen, sonst kann der
+Pi-hole-Container nicht binden.
 
 **Befehle**
+
+```bash
+sudo bash /opt/setup/scripts/06_pihole_dns.sh
+```
 
 ```bash
 sudo mkdir -p /srv/docker && sudo cp -r /opt/setup/stacks/* /srv/docker/

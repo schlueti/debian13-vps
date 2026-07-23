@@ -4,7 +4,7 @@
 set -Eeuo pipefail
 
 BACKUP_DIR=/srv/backups
-STACKS_DIR=/srv/docker
+STACKS_DIR=/opt/setup/stacks
 KEEP_DAYS=14
 DATE="$(date +%F)"
 

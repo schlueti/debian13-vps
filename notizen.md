@@ -63,3 +63,38 @@ docker compose logs -f                          # prüfen
 
 - Server-Key-Expiry in der Admin-Konsole deaktiviert (sonst fällt der VPS irgendwann raus).
 - `tailscale ip -4` → die `100.x`-Adresse (= `TAILSCALE_IP` in der Pi-hole-.env).
+
+### Zweite tailscaled-Instanz auf meinem Rechner (Headscale ↔ Christinas Tailnet)
+
+Läuft auf **meinem lokalen Rechner**, nicht auf dem VPS. Eigener State/Socket/TUN,
+damit die Headscale-Instanz unberührt bleibt (beide können parallel laufen).
+Auth-Key stellt Christina aus (siehe `fuer-christina.md` Teil 5).
+
+```ini
+# /etc/systemd/system/tailscaled-freundin.service
+[Unit]
+Description=Tailscale (Freundin) — zweite Instanz
+After=network-pre.target
+Wants=network-pre.target
+
+[Service]
+ExecStart=/usr/sbin/tailscaled \
+  --state=/var/lib/tailscale-freundin/tailscaled.state \
+  --socket=/run/tailscale-freundin/tailscaled.sock \
+  --tun=tailscale-fr \
+  --port=0
+RuntimeDirectory=tailscale-freundin
+StateDirectory=tailscale-freundin
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload && sudo systemctl enable --now tailscaled-freundin
+sudo tailscale --socket=/run/tailscale-freundin/tailscaled.sock up --authkey tskey-auth-...
+# Steuerung immer über den Socket (Alias empfohlen):
+alias ts-fr='tailscale --socket=/run/tailscale-freundin/tailscaled.sock'
+ts-fr status   # ts-fr up / ts-fr down zum Wechseln
+```

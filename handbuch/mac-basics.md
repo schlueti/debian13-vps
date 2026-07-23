@@ -1,8 +1,8 @@
 # Mac-Basics: Terminal, SSH-Key, Verbindung zum Server
 
-Dieses Kapitel gehört zu Phase 0 im `runbook.md` — du machst es **daheim,
-allein, vor dem Einrichtungs-Nachmittag**. Danach hast du deinen eigenen
-SSH-Key — und weißt für später, wie du dich mit dem Server verbindest.
+Dieses Kapitel machst du **daheim, allein, vor dem Einrichtungs-Nachmittag**.
+Danach hast du deinen eigenen SSH-Key — und weißt für später, wie du dich mit
+dem Server verbindest.
 
 Ein SSH-Key ist wie ein Haustürschlüssel, nur digital: Er besteht aus zwei
 Dateien, einem privaten und einem öffentlichen Teil. Der Server bekommt nur
@@ -84,15 +84,14 @@ pbcopy < ~/.ssh/id_ed25519.pub
 
 Jetzt ist der Key in der Zwischenablage — du kannst ihn mit `Cmd`+`V`
 überall einfügen (z. B. beim Speichern als `scripts/keys/christina.pub` im
-Repo, siehe `runbook.md` Phase 0).
+Repo).
 
 ---
 
 > **Ab hier: erst am/nach dem Einrichtungs-Nachmittag!** Die Kapitel 4–6
-> funktionieren erst, wenn dein Benutzer auf dem Server existiert (Phase 1
-> im Runbook) — vorher gibt es den User `christina` auf dem Server noch
-> nicht, die Verbindung kann also noch nicht klappen. Für die Vorbereitung
-> (Phase 0) bist du nach Kapitel 3 fertig.
+> funktionieren erst, wenn dein Benutzer auf dem Server existiert — vorher
+> gibt es den User `christina` auf dem Server noch nicht, die Verbindung kann
+> also noch nicht klappen. Für die Vorbereitung bist du nach Kapitel 3 fertig.
 
 ## 4. `~/.ssh/config` einrichten
 
@@ -128,9 +127,9 @@ in Kapitel 6.
 Ersetze `<VPS-IP>` durch die öffentliche IP-Adresse, die ihr vom Hoster
 bekommen habt (steht meist in der Bestätigungsmail).
 
-> **Später aktualisieren:** Nach Phase 4/5 im Runbook ist der Server nur
-> noch über Tailscale erreichbar, die öffentliche IP funktioniert dann
-> nicht mehr für SSH. Sobald ihr die Tailscale-IP kennt (`tailscale ip -4`
+> **Später aktualisieren:** Sobald Tailscale und die Firewall aktiv sind, ist
+> der Server nur noch über Tailscale erreichbar, die öffentliche IP
+> funktioniert dann nicht mehr für SSH. Sobald ihr die Tailscale-IP kennt (`tailscale ip -4`
 > auf dem Server), öffnest du diese Datei noch einmal mit `nano
 > ~/.ssh/config` und ersetzt die `HostName`-Zeile durch die Tailscale-IP.
 > Bis dahin bleibt hier einfach die öffentliche IP stehen.

@@ -1,7 +1,7 @@
 # Tailscale: der private Tunnel zu deinem Server
 
-Dieses Kapitel gehört zu Phase 4 im `runbook.md`. Es erklärt, was
-Tailscale eigentlich ist und wie du im Alltag erkennst, ob es läuft —
+Dieses Kapitel erklärt, was Tailscale eigentlich ist und wie du im Alltag
+erkennst, ob es läuft —
 das ist der häufigste Grund, warum mal „etwas nicht geht" (siehe auch
 `handbuch/notfall.md`).
 
@@ -20,8 +20,8 @@ Internets ist der Tunnel unsichtbar und nicht erreichbar.
 ## 2. Warum brauchen wir das?
 
 Der Server hat zwar eine öffentliche Adresse im Internet (die hat jeder
-Server bei einem Hoster) — aber seit Phase 5 im Runbook ist von außen
-nichts mehr erreichbar. SSH, Pi-hole und Vaultwarden laufen nur noch
+Server bei einem Hoster) — aber die Firewall macht ihn von außen komplett
+dicht. SSH, Pi-hole und Vaultwarden laufen nur noch
 durch den Tailscale-Tunnel. Das heißt: Ohne Tailscale kein Zugriff —
 weder für dich, noch für jemanden von außen.
 
@@ -100,8 +100,7 @@ durchlaufen soll, wäre das lästig.
 Markus hat deshalb für die VPS-Maschine in der Admin-Konsole (Gerät
 anklicken → „…" → **„Disable key expiry"**) das Ablaufen des Schlüssels
 abgeschaltet. Das bedeutet: Der Server bleibt dauerhaft im Tailnet,
-ohne dass sich jemand alle paar Monate erneut anmelden muss. Das ist im
-Runbook Phase 4 als fester Schritt vorgesehen — falls der Server
+ohne dass sich jemand alle paar Monate erneut anmelden muss. Falls der Server
 trotzdem mal aus der Geräteliste verschwindet, ist das der erste Punkt,
 den man mit Markus prüft.
 

@@ -1,1 +1,6 @@
 stacks/*/.env
+
+# Laufzeitdaten der Container — liegen im Checkout, gehören aber nie ins Repo
+# (Pi-hole-Config, Vaultwarden-Datenbank mit Passwörtern)
+stacks/pihole/etc-pihole/
+stacks/vaultwarden/data/
